@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "login": "asdas",
+      "password": "asd"
+    },
+    {
+      "login": "asd asdada sadsa",
+      "password": "asdad "
+    },
+    {
+      "login": "login",
+      "password": "login"
+    },
+    {
+      "login": "asd",
+      "password": "asd"
+    }
+  ]
+}
