@@ -19,7 +19,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DataBaseGson {
     File theFile = new File("person.json");
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    final Gson gson = new Gson();
 
 
     private void checkDelete() {
@@ -30,30 +30,21 @@ public class DataBaseGson {
     public void write(DataBaseModel dataBaseModel) {
         checkDelete();
 
-        String json = gson.toJson(dataBaseModel);
-
         try (FileWriter writer = new FileWriter(theFile)) {
-            writer.write(json);
+            gson.toJson(dataBaseModel, writer);
         } catch (IOException e) {
             System.out.println("Ошибка связано с записью файла");
+            e.printStackTrace();
         }
     }
 
-    public List<User> wrapper() {
-        List<User> users = new ArrayList<>();
+    public DataBaseModel wrapper() {
         try (FileReader reader = new FileReader(theFile)) {
-            Type userListType = new TypeToken<DataBaseModel>() {
-            }.getType();
-            DataBaseModel wrapperList = gson.fromJson(reader, userListType);
-            if (wrapperList != null && wrapperList.getUsers() != null) {
-                users.addAll(wrapperList.getUsers());
-            }
+            return gson.fromJson(reader, DataBaseModel.class);
+
         } catch (IOException e) {
-            System.out.println("Ошибка связано с инициализацией файла");
+            e.printStackTrace();
         }
-        return users;
+        return new DataBaseModel(new ArrayList<>());
     }
-    }
-
-
-
+}

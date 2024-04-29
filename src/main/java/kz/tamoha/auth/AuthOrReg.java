@@ -14,8 +14,11 @@ public class AuthOrReg {
     String password;
     Scanner scan = new Scanner(System.in);
 
-    public boolean getAuth() {
-        DataBaseGson data = new DataBaseGson();
+    DataBaseModel dataBaseModel;
+    DataBaseGson data = new DataBaseGson();
+
+    public void getAuth() {
+        dataBaseModel = data.wrapper();
 
         System.out.println("Войдите в систему:");
         System.out.print("Логин: ");
@@ -23,22 +26,18 @@ public class AuthOrReg {
         System.out.print("Пароль: ");
         password = scan.nextLine();
 
-        List<User> users = data.wrapper();
-
+        List<User> users = dataBaseModel.getUsers();
         for (User user : users) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 System.out.println("Вы успешно вошли в систему.");
-                return true;
+                return;
             }
         }
         setRegistration(login, password);
-        return false;
     }
 
     private void setRegistration(String login, String password){
-        DataBaseGson dataBaseGson = new DataBaseGson();
-
-        List<User> users = dataBaseGson.wrapper();
+        List<User> users = data.wrapper().getUsers();
 
         /* System.out.println("Зарегистрируйтесь в системе:");
         System.out.print("Логин: ");
@@ -51,7 +50,7 @@ public class AuthOrReg {
 
         DataBaseModel dataBaseModel = new DataBaseModel(users);
 
-        dataBaseGson.write(dataBaseModel);
+        data.write(dataBaseModel);
         System.out.println("Вы успешно зарегистрировались");
     }
 }
