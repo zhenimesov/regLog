@@ -4,11 +4,13 @@ import kz.tamoha.auth.impl.Registration;
 import kz.tamoha.basic.model.DataBaseModel;
 import kz.tamoha.basic.model.User;
 import kz.tamoha.database.DataBaseGson;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ConsoleRegistration implements Registration {
-    private final DataBaseGson data;
+    DataBaseGson data;
 
     public ConsoleRegistration(DataBaseGson data) {
         this.data = data;
@@ -20,6 +22,6 @@ public class ConsoleRegistration implements Registration {
         users.add(new User(login, password));
         DataBaseModel dataBaseModel = new DataBaseModel(users);
         data.write(dataBaseModel);
-        System.out.println("Вы успешно зарегистрировались");
+
     }
 }

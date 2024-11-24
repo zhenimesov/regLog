@@ -3,25 +3,26 @@ package kz.tamoha.auth.impl.console;
 import kz.tamoha.auth.impl.Authenticator;
 import kz.tamoha.basic.model.DataBaseModel;
 import kz.tamoha.basic.model.User;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ConsoleAuthenticator implements Authenticator {
-
-    private final DataBaseModel dataBaseModel;
+    DataBaseModel dataBaseModel;
 
     public ConsoleAuthenticator(DataBaseModel dataBaseModel) {
         this.dataBaseModel = dataBaseModel;
     }
     @Override
-    public void authenticate(String login, String password) {
+    public boolean authenticate(String login, String password) {
         List<User> users = dataBaseModel.getUsers();
         for (User user : users) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
-                System.out.println("Вы успешно вошли в систему.");
-                return;
+
+                return true;
             }
         }
-        System.out.println("Неверные учетные данные.");
+        return false;
     }
 }

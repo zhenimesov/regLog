@@ -1,21 +1,18 @@
 package kz.tamoha.auth;
 
-import kz.tamoha.auth.impl.Authenticator;
-import kz.tamoha.auth.impl.Registration;
+import kz.tamoha.auth.impl.AutomaticLogin;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-
 import java.util.Scanner;
+
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AuthOrReg {
     Scanner scan = new Scanner(System.in);
-    Authenticator authenticator;
-    Registration registration;
+    AutomaticLogin automaticLogin;
 
-    public AuthOrReg(Authenticator authenticator, Registration registration) {
-        this.authenticator = authenticator;
-        this.registration = registration;
+    public AuthOrReg(AutomaticLogin automaticLogin) {
+        this.automaticLogin = automaticLogin;
     }
 
     public void performAuthOrReg() {
@@ -25,7 +22,6 @@ public class AuthOrReg {
         System.out.print("Пароль: ");
         String password = scan.nextLine();
 
-        authenticator.authenticate(login, password);
-        registration.register(login, password);
+        automaticLogin.checkAuth(login, password);
     }
 }
