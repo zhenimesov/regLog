@@ -14,7 +14,7 @@ public class Main {
         DataBaseModel dataBaseModel = dataBaseGson.wrapper();
 
         Authenticator authenticator = new ConsoleAuthenticator(dataBaseModel);
-        ConsoleRegistration registration = new ConsoleRegistration(dataBaseGson);
+        Registration registration = new ConsoleRegistration(dataBaseGson);
 
         AuthOrReg authOrReg = new AuthOrReg(authenticator, registration);
         authOrReg.performAuthOrReg();
