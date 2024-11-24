@@ -1,56 +1,31 @@
 package kz.tamoha.auth;
 
-import kz.tamoha.basic.model.DataBaseModel;
-import kz.tamoha.basic.model.User;
-import kz.tamoha.database.DataBaseGson;
+import kz.tamoha.auth.impl.Authenticator;
+import kz.tamoha.auth.impl.Registration;
+
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
 import java.util.Scanner;
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AuthOrReg {
-    String login;
-    String password;
     Scanner scan = new Scanner(System.in);
+    Authenticator authenticator;
+    Registration registration;
 
-    DataBaseModel dataBaseModel;
-    DataBaseGson data = new DataBaseGson();
-
-    public void getAuth() {
-        dataBaseModel = data.wrapper();
-
-        System.out.println("Войдите в систему:");
-        System.out.print("Логин: ");
-        login = scan.nextLine();
-        System.out.print("Пароль: ");
-        password = scan.nextLine();
-
-        List<User> users = dataBaseModel.getUsers();
-        for (User user : users) {
-            if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
-                System.out.println("Вы успешно вошли в систему.");
-                return;
-            }
-        }
-        setRegistration(login, password);
+    public AuthOrReg(Authenticator authenticator, Registration registration) {
+        this.authenticator = authenticator;
+        this.registration = registration;
     }
 
-    private void setRegistration(String login, String password){
-        List<User> users = data.wrapper().getUsers();
-
-        /* System.out.println("Зарегистрируйтесь в системе:");
+    public void performAuthOrReg() {
+        System.out.println("Войдите в систему:");
         System.out.print("Логин: ");
-        login = scan.nextLine();
+        String login = scan.nextLine();
         System.out.print("Пароль: ");
-        password = scan.nextLine();*/
+        String password = scan.nextLine();
 
-
-        users.add(new User(login, password));
-
-        DataBaseModel dataBaseModel = new DataBaseModel(users);
-
-        data.write(dataBaseModel);
-        System.out.println("Вы успешно зарегистрировались");
+        authenticator.authenticate(login, password);
+        registration.register(login, password);
     }
 }

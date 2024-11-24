@@ -16,22 +16,16 @@ import java.util.List;
 
 
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DataBaseGson {
-    File theFile = new File("person.json");
-    final Gson gson = new Gson();
-
-
-    private void checkDelete() {
-        if (!theFile.delete())
-            theFile = new File("person.json");
-    }
+    File file = new File("person.json");
+    Gson gson = new Gson();
 
     public void write(DataBaseModel dataBaseModel) {
-        checkDelete();
 
-        try (FileWriter writer = new FileWriter(theFile)) {
+        try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(dataBaseModel, writer);
+
         } catch (IOException e) {
             System.out.println("Ошибка связано с записью файла");
             e.printStackTrace();
@@ -39,7 +33,8 @@ public class DataBaseGson {
     }
 
     public DataBaseModel wrapper() {
-        try (FileReader reader = new FileReader(theFile)) {
+
+        try (FileReader reader = new FileReader(file)) {
             return gson.fromJson(reader, DataBaseModel.class);
 
         } catch (IOException e) {
