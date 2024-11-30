@@ -5,23 +5,19 @@ import kz.tamoha.basic.model.DataBaseModel;
 import kz.tamoha.basic.model.User;
 import kz.tamoha.database.DataBaseGson;
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import java.util.List;
+
+@RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ConsoleRegistration implements Registration {
     DataBaseGson data;
 
-    public ConsoleRegistration(DataBaseGson data) {
-        this.data = data;
-    }
-
     @Override
     public void register(String login, String password) {
-        List<User> users = data.wrapper().getUsers();
+        List<User> users = data.read().getUsers();
         users.add(new User(login, password));
-        DataBaseModel dataBaseModel = new DataBaseModel(users);
-        data.write(dataBaseModel);
-
+        data.write(new DataBaseModel(users));
     }
 }

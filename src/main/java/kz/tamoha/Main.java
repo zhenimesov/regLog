@@ -12,12 +12,18 @@ import kz.tamoha.database.DataBaseGson;
 
 public class Main {
     public static void main(String[] args) {
+        // Создание объектов для работы с базой данных
         DataBaseGson dataBaseGson = new DataBaseGson();
-        DataBaseModel dataBaseModel = dataBaseGson.wrapper();
+        DataBaseModel dataBaseModel = dataBaseGson.read();
 
+        // Создание объектов для аутентификации и регистрации
         Authenticator authenticator = new ConsoleAuthenticator(dataBaseModel);
         Registration registration = new ConsoleRegistration(dataBaseGson);
+
+        // Создание объекта для автоматического входа
         AutomaticLogin automaticLogin = new ConsoleAutomaticLogin(registration, authenticator);
+
+        // Создание объекта для обработки аутентификации или регистрации
         AuthOrReg authOrReg = new AuthOrReg(automaticLogin);
         authOrReg.performAuthOrReg();
     }

@@ -12,22 +12,20 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DataBaseGson {
+
     File file = new File("person.json");
     Gson gson = new Gson();
 
     public void write(DataBaseModel dataBaseModel) {
-
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(dataBaseModel, writer);
-
         } catch (IOException e) {
             System.out.println("Ошибка связано с записью файла");
             e.printStackTrace();
         }
     }
 
-    public DataBaseModel wrapper() {
-
+    public DataBaseModel read() {
         try (FileReader reader = new FileReader(file)) {
             return gson.fromJson(reader, DataBaseModel.class);
 
